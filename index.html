@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imraan Mohamed — GTM Engineer @ AZX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00ff88;
+  --cyan: #00e5ff;
+  --bg: #080b0f;
+  --bg2: #0d1117;
+  --bg3: #111820;
+  --border: rgba(0,255,136,0.12);
+  --border2: rgba(0,229,255,0.1);
+  --text: #c9d1d9;
+  --text-dim: #5a6370;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-head);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── Grid background ───────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Custom cursor ─────────────────────────────────────── */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, background 0.2s;
+  box-shadow: 0 0 10px var(--green), 0 0 20px var(--green);
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,255,136,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all 0.18s ease;
+}
+a:hover ~ .cursor, button:hover ~ .cursor { transform: translate(-50%,-50%) scale(2); }
+
+/* ── NAV ───────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 48px;
+  background: rgba(8,11,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--green);
+  letter-spacing: 0.05em;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  font-size: 13px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: 0.04em; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--green); }
+.nav-apply {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 8px 20px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  background: transparent;
+  border-radius: 4px;
+  cursor: none;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.nav-apply:hover {
+  background: rgba(0,255,136,0.08);
+  box-shadow: 0 0 16px rgba(0,255,136,0.2);
+}
+
+/* ── HERO ──────────────────────────────────────────────── */
+#hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 120px 10vw 80px;
+  overflow: hidden;
+}
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--green);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.2s forwards;
+}
+.hero-tag::before { content: '> '; opacity: 0.5; }
+
+.hero-name {
+  font-size: clamp(56px, 9vw, 110px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.35s forwards;
+}
+.hero-name span { color: var(--green); }
+
+.terminal-box {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--green);
+  background: rgba(0,255,136,0.04);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  padding: 14px 20px;
+  border-radius: 4px;
+  margin-bottom: 32px;
+  max-width: 580px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.5s forwards;
+}
+.terminal-box .prompt { color: var(--text-dim); }
+#typed-text { color: var(--cyan); }
+.cursor-blink {
+  display: inline-block; width: 8px; height: 14px;
+  background: var(--green); margin-left: 2px; vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-sub {
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 400;
+  color: var(--text-dim);
+  line-height: 1.5;
+  max-width: 500px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.65s forwards;
+}
+.hero-sub strong { color: var(--text); font-weight: 600; }
+
+.hero-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+}
+.btn-primary {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 14px 32px;
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: none;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  text-decoration: none;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0,255,136,0.4);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  cursor: none;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover {
+  border-color: var(--cyan);
+  background: rgba(0,229,255,0.05);
+}
+
+/* Glowing orb behind hero */
+.hero-orb {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,255,136,0.06) 0%, transparent 70%);
+  right: -100px; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  animation: pulse 6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+  50% { transform: translateY(-50%) scale(1.1); opacity: 0.7; }
+}
+.scroll-hint {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--green), transparent);
+  animation: scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ── REVEAL ANIMATION ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION COMMON ────────────────────────────────────── */
+section { position: relative; z-index: 1; }
+.section-inner { max-width: 1100px; margin: 0 auto; padding: 100px 48px; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1; max-width: 60px;
+  height: 1px; background: var(--green); opacity: 0.4;
+}
+.section-title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.section-title .accent { color: var(--green); }
+.section-sub {
+  font-size: 17px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 60px;
+}
+
+/* ── WHY AZX ───────────────────────────────────────────── */
+#mission { background: var(--bg2); }
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+.mission-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 32px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.mission-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.mission-card:hover { border-color: rgba(0,255,136,0.3); box-shadow: 0 0 30px rgba(0,255,136,0.06); }
+.mission-card:hover::before { opacity: 1; }
+.mission-num {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--green);
+  letter-spacing: 0.1em; margin-bottom: 16px;
+}
+.mission-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; line-height: 1.3; }
+.mission-card p { font-size: 15px; color: var(--text-dim); line-height: 1.7; }
+.mission-card p strong { color: var(--text); }
+
+/* ── ARSENAL ───────────────────────────────────────────── */
+#arsenal { background: var(--bg); }
+.arsenal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.skill-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  transition: border-color 0.3s, transform 0.2s;
+}
+.skill-card:hover {
+  border-color: rgba(0,229,255,0.3);
+  transform: translateY(-3px);
+}
+.skill-icon {
+  font-size: 28px; margin-bottom: 14px;
+}
+.skill-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.skill-card p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.skill-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(0,229,255,0.08);
+  border: 1px solid rgba(0,229,255,0.15);
+  color: var(--cyan);
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+/* ── STATS ─────────────────────────────────────────────── */
+#stats { background: var(--bg2); }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+.stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 36px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.stat-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s ease;
+}
+.stat-card.visible::after { transform: scaleX(1); }
+.stat-card:hover { box-shadow: 0 0 40px rgba(0,255,136,0.08); }
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(0,255,136,0.3);
+}
+.stat-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+}
+.stat-detail {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* ── PIPELINE ──────────────────────────────────────────── */
+#pipeline { background: var(--bg); }
+.pipeline-wrap {
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+.pipeline-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  min-width: 900px;
+}
+.pipeline-stage {
+  flex: 1;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px 20px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.pipeline-stage:hover {
+  border-color: rgba(0,255,136,0.3);
+  box-shadow: 0 0 24px rgba(0,255,136,0.06);
+}
+.pipeline-stage + .pipeline-stage { margin-left: 0; }
+.pipeline-connector {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; flex-shrink: 0; position: relative;
+}
+.connector-line {
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--border), rgba(0,255,136,0.3), var(--border));
+  position: relative;
+  overflow: hidden;
+}
+.connector-line::after {
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 12px; height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+  animation: flowDot 2s linear infinite;
+}
+.pipeline-connector:nth-child(2) .connector-line::after { animation-delay: 0.4s; }
+.pipeline-connector:nth-child(4) .connector-line::after { animation-delay: 0.8s; }
+.pipeline-connector:nth-child(6) .connector-line::after { animation-delay: 1.2s; }
+.pipeline-connector:nth-child(8) .connector-line::after { animation-delay: 1.6s; }
+
+@keyframes flowDot {
+  0% { left: -10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 110%; opacity: 0; }
+}
+.stage-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.stage-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.stage-items {
+  list-style: none;
+}
+.stage-items li {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 3px 0;
+  display: flex; align-items: center; gap: 6px;
+}
+.stage-items li::before {
+  content: '▸'; color: var(--green); font-size: 9px;
+}
+.stage-result {
+  margin-top: 14px;
+  padding: 8px 10px;
+  background: rgba(0,255,136,0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
+}
+
+/* Pipeline cost bar */
+.pipeline-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+  padding: 20px 24px;
+  background: rgba(0,255,136,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.meta-item {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.meta-value {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ── CTA ───────────────────────────────────────────────── */
+#cta {
+  background: var(--bg2);
+  text-align: center;
+}
+#cta .section-inner {
+  display: flex; flex-direction: column; align-items: center;
+}
+.cta-glow {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, transparent 70%);
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cta-headline {
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  position: relative;
+}
+.cta-headline .accent { color: var(--green); }
+.cta-sub {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  position: relative;
+}
+.cta-email {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  padding: 18px 40px;
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: none;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  transition: box-shadow 0.2s, transform 0.15s;
+  position: relative;
+}
+.cta-email:hover {
+  box-shadow: 0 0 40px rgba(0,255,136,0.4);
+  transform: translateY(-2px);
+}
+.cta-note {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 20px;
+}
+
+/* ── FOOTER ────────────────────────────────────────────── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+footer span { color: var(--green); }
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .section-inner { padding: 72px 24px; }
+  #hero { padding: 100px 24px 60px; }
+  .pipeline-flow { flex-direction: column; min-width: unset; }
+  .pipeline-connector { width: auto; height: 24px; }
+  .connector-line { width: 2px; height: 100%; background: linear-gradient(to bottom, var(--border), rgba(0,255,136,0.3), var(--border)); }
+  @keyframes flowDot { 0% { top: -10%; left: 50%; transform: translateX(-50%); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; left: 50%; transform: translateX(-50%); opacity: 0; } }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">imraan@pipelinespark:~$</div>
+  <ul class="nav-links">
+    <li><a href="#mission">Why AZX</a></li>
+    <li><a href="#arsenal">Arsenal</a></li>
+    <li><a href="#stats">Numbers</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+  </ul>
+  <a href="#cta" class="nav-apply">Let's talk →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-tag">GTM Engineer Application — AZX</div>
+  <h1 class="hero-name">Imraan<br><span>Mohamed</span></h1>
+  <div class="terminal-box">
+    <span class="prompt">$ </span><span id="typed-text"></span><span class="cursor-blink"></span>
+  </div>
+  <p class="hero-sub">
+    I don't apply with a cover letter.<br>
+    I apply with <strong>proof</strong>.
+  </p>
+  <div class="hero-ctas">
+    <a href="#stats" class="btn-primary">See the numbers</a>
+    <a href="#pipeline" class="btn-ghost">View the system →</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- WHY AZX -->
+<section id="mission">
+  <div class="section-inner">
+    <div class="section-label reveal">01 — Mission alignment</div>
+    <h2 class="section-title reveal reveal-delay-1">Why AZX <span class="accent">resonates</span></h2>
+    <p class="section-sub reveal reveal-delay-2">AZX isn't bolting AI onto existing workflows. You're rebuilding the infrastructure of impact. That's the only kind of building I know how to do.</p>
+    <div class="mission-grid">
+      <div class="mission-card reveal reveal-delay-1">
+        <div class="mission-num">// 01</div>
+        <h3>AI as infrastructure, not a feature</h3>
+        <p>AZX is building the operating layer for critical industries using AI. At PipeLineSpark, I replaced <strong>$15,000/year of tooling with $5 of API calls</strong>. Same philosophy — use AI to compress cost and complexity, not add it.</p>
+      </div>
+      <div class="mission-card reveal reveal-delay-2">
+        <div class="mission-num">// 02</div>
+        <h3>Clean energy needs precision GTM</h3>
+        <p>Selling into critical infrastructure isn't spray-and-pray. It requires <strong>targeted enrichment, verified contacts, and personalized outreach at scale</strong> — exactly the systems I architect from scratch.</p>
+      </div>
+      <div class="mission-card reveal reveal-delay-3">
+        <div class="mission-num">// 03</div>
+        <h3>$6M Series A means the machine needs to run now</h3>
+        <p>Early-stage growth requires a GTM engineer who can ship fast and iterate on real data. I've done this <strong>bootstrapped with zero budget</strong>. Imagine what I can build with actual resources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARSENAL -->
+<section id="arsenal">
+  <div class="section-inner">
+    <div class="section-label reveal">02 — What I bring</div>
+    <h2 class="section-title reveal reveal-delay-1">Built for this <span class="accent">role</span></h2>
+    <p class="section-sub reveal reveal-delay-2">Every skill listed below was earned in production — not a course, not a side project. Real campaigns, real results.</p>
+    <div class="arsenal-grid">
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">⚙️</div>
+        <h4>Lead Enrichment Systems</h4>
+        <p>Built a Python + DeepSeek app that enriches 3,000+ leads for under $5. Replaces Clay at 99% lower cost.</p>
+        <span class="skill-tag">Python · DeepSeek API</span>
+      </div>
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">🔍</div>
+        <h4>Large-Scale Scraping</h4>
+        <p>Scraped 7,000+ leads from Clutch.co via Claude Code + Apify. Entire pipeline cost under $7 total.</p>
+        <span class="skill-tag">Claude Code · Apify</span>
+      </div>
+      <div class="skill-card reveal reveal-delay-3">
+        <div class="skill-icon">📨</div>
+        <h4>Cold Email Infrastructure</h4>
+        <p>Managed 15 inboxes, full domain setup, warmup, and deliverability. Wrote and A/B tested all copy in-house.</p>
+        <span class="skill-tag">Instantly · 15 inboxes</span>
+      </div>
+      <div class="skill-card reveal reveal-delay-4">
+        <div class="skill-icon">🤖</div>
+        <h4>AI Workflow Automation</h4>
+        <p>End-to-end pipelines using multiple AI APIs. Built automated workflows from prospecting to booked meeting.</p>
+        <span class="skill-tag">AI · API Integration</span>
+      </div>
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">📊</div>
+        <h4>CRM & Campaign Analytics</h4>
+        <p>Built tracking and reporting around campaign performance. Iterated on reply data to optimize messaging.</p>
+        <span class="skill-tag">HubSpot · Apollo.io</span>
+      </div>
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">🛡️</div>
+        <h4>Email Verification</h4>
+        <p>Mandatory pre-enrichment verification step protecting inbox health, reducing bounces and wasted spend.</p>
+        <span class="skill-tag">Deliverability · Hygiene</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="section-inner">
+    <div class="section-label reveal">03 — The numbers</div>
+    <h2 class="section-title reveal reveal-delay-1">Results that <span class="accent">ship</span></h2>
+    <p class="section-sub reveal reveal-delay-2">Every stat below is from one person, bootstrapped, with no external funding and no subscription tools beyond Instantly.</p>
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1" data-target="5" data-suffix="" data-prefix="">
+        <div class="stat-value" data-count="5">0</div>
+        <div class="stat-label">Clients closed</div>
+        <div class="stat-detail">single 3,000 lead campaign</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2" data-target="3000" data-suffix="+" data-prefix="">
+        <div class="stat-value" data-count="3000">0</div>
+        <div class="stat-label">Leads enriched</div>
+        <div class="stat-detail">multiple times · under $5 total</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3" data-target="1.1" data-suffix="%" data-prefix="">
+        <div class="stat-value" data-count="1.1">0</div>
+        <div class="stat-label">Cold email reply rate</div>
+        <div class="stat-detail">15 inboxes · fully bootstrapped</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4" data-target="7000" data-suffix="+" data-prefix="">
+        <div class="stat-value" data-count="7000">0</div>
+        <div class="stat-label">Leads scraped</div>
+        <div class="stat-detail">total cost: under $7</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE DIAGRAM -->
+<section id="pipeline">
+  <div class="section-inner">
+    <div class="section-label reveal">04 — System architecture</div>
+    <h2 class="section-title reveal reveal-delay-1">How the <span class="accent">pipeline</span> works</h2>
+    <p class="section-sub reveal reveal-delay-2">This is the exact GTM system I built at PipeLineSpark — from raw data sources to closed clients. Every node is automated.</p>
+
+    <div class="pipeline-wrap reveal">
+      <div class="pipeline-flow">
+
+        <div class="pipeline-stage">
+          <div class="stage-badge">// stage 01</div>
+          <div class="stage-title">Data Sources</div>
+          <ul class="stage-items">
+            <li>Clutch.co</li>
+            <li>LinkedIn</li>
+            <li>Apollo.io</li>
+          </ul>
+          <div class="stage-result">7,000+ raw targets</div>
+        </div>
+
+        <div class="pipeline-connector"><div class="connector-line"></div></div>
+
+        <div class="pipeline-stage">
+          <div class="stage-badge">// stage 02</div>
+          <div class="stage-title">Collection</div>
+          <ul class="stage-items">
+            <li>Claude Code</li>
+            <li>Apify scraper</li>
+            <li>$1 / 1k leads</li>
+          </ul>
+          <div class="stage-result">Structured records</div>
+        </div>
+
+        <div class="pipeline-connector"><div class="connector-line"></div></div>
+
+        <div class="pipeline-stage">
+          <div class="stage-badge">// stage 03</div>
+          <div class="stage-title">Enrichment</div>
+          <ul class="stage-items">
+            <li>DeepSeek API</li>
+            <li>Custom web app</li>
+            <li>Python pipeline</li>
+          </ul>
+          <div class="stage-result">&lt; $5 for 3,000+ leads</div>
+        </div>
+
+        <div class="pipeline-connector"><div class="connector-line"></div></div>
+
+        <div class="pipeline-stage">
+          <div class="stage-badge">// stage 04</div>
+          <div class="stage-title">Verification</div>
+          <ul class="stage-items">
+            <li>Email validation</li>
+            <li>Bounce filter</li>
+            <li>Inbox protection</li>
+          </ul>
+          <div class="stage-result">Clean, deliverable list</div>
+        </div>
+
+        <div class="pipeline-connector"><div class="connector-line"></div></div>
+
+        <div class="pipeline-stage">
+          <div class="stage-badge">// stage 05</div>
+          <div class="stage-title">Activation</div>
+          <ul class="stage-items">
+            <li>Instantly</li>
+            <li>15 warm inboxes</li>
+            <li>A/B sequences</li>
+          </ul>
+          <div class="stage-result">1.1% reply rate</div>
+        </div>
+
+        <div class="pipeline-connector"><div class="connector-line"></div></div>
+
+        <div class="pipeline-stage" style="border-color: rgba(0,255,136,0.3); box-shadow: 0 0 20px rgba(0,255,136,0.06);">
+          <div class="stage-badge">// result</div>
+          <div class="stage-title">Revenue</div>
+          <ul class="stage-items">
+            <li>5 clients closed</li>
+            <li>$1,500+ setup</li>
+            <li>Pay-per-meeting</li>
+          </ul>
+          <div class="stage-result" style="color: #fff; background: rgba(0,255,136,0.1);">$0 tool spend beyond Instantly</div>
+        </div>
+
+      </div>
+
+      <div class="pipeline-meta reveal">
+        <div class="meta-item">
+          <span class="meta-label">Total pipeline cost</span>
+          <span class="meta-value">&lt; $12</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Leads processed</span>
+          <span class="meta-value">7,000+</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tools replaced</span>
+          <span class="meta-value">Clay · ZoomInfo · Hunter</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time to build</span>
+          <span class="meta-value">Self-taught · Bootstrapped</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Stack</span>
+          <span class="meta-value">Python · DeepSeek · Apify · Claude</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-inner">
+    <div class="cta-glow"></div>
+    <div class="section-label reveal" style="justify-content:center;">05 — Let's build</div>
+    <h2 class="cta-headline reveal reveal-delay-1">
+      Ready to build<br>AZX's <span class="accent">GTM machine</span>
+    </h2>
+    <p class="cta-sub reveal reveal-delay-2">
+      I built all of this bootstrapped, alone, with no budget.
+      Give me the mission, the stack, and the team — and I'll ship infrastructure that compounds.
+    </p>
+    <a href="mailto:Imraanabubakar@gmail.com?subject=GTM Engineer — AZX Application — Imraan Mohamed" class="cta-email reveal reveal-delay-3">
+      Imraanabubakar@gmail.com →
+    </a>
+    <p class="cta-note reveal reveal-delay-4">437.522.9229 · linkedin.com/in/imraanmohamed</p>
+  </div>
+</section>
+
+<footer>
+  <span>Imraan Mohamed</span>
+  <div>GTM Engineer Application · AZX · 2026</div>
+  <div>Built in one file. No frameworks. <span>Pure signal.</span></div>
+</footer>
+
+<script>
+// ── Custom cursor ────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+(function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+})();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+    ring.style.borderColor = 'rgba(0,255,136,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.borderColor = 'rgba(0,255,136,0.4)';
+  });
+});
+
+// ── Typing effect ────────────────────────────────────────
+const lines = [
+  'building_gtm_systems --target=AZX --mode=production',
+  'enriching_leads --cost="<$5" --count=3000 --tool=DeepSeek',
+  'running_campaign --inboxes=15 --reply-rate=1.1%',
+  'closing_clients --from=outbound --count=5 --budget=$0',
+];
+let lineIdx = 0, charIdx = 0, deleting = false;
+const typedEl = document.getElementById('typed-text');
+
+function type() {
+  const line = lines[lineIdx];
+  if (!deleting) {
+    typedEl.textContent = line.slice(0, ++charIdx);
+    if (charIdx === line.length) { deleting = true; setTimeout(type, 2200); return; }
+    setTimeout(type, 42);
+  } else {
+    typedEl.textContent = line.slice(0, --charIdx);
+    if (charIdx === 0) {
+      deleting = false;
+      lineIdx = (lineIdx + 1) % lines.length;
+      setTimeout(type, 400);
+      return;
+    }
+    setTimeout(type, 18);
+  }
+}
+setTimeout(type, 1000);
+
+// ── Scroll reveals ───────────────────────────────────────
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ── Counter animations ───────────────────────────────────
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const card   = entry.target;
+    const el     = card.querySelector('[data-count]');
+    const target = parseFloat(el.getAttribute('data-count'));
+    const isFloat = target % 1 !== 0;
+    let start = null;
+    const duration = 1400;
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      const val      = eased * target;
+      el.textContent = isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = isFloat ? target.toFixed(1) : target.toLocaleString();
+    }
+    requestAnimationFrame(step);
+    card.classList.add('visible');
+    counterObserver.unobserve(card);
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.stat-card').forEach(el => counterObserver.observe(el));
+</script>
+</body>
+</html>
